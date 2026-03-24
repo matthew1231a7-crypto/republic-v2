@@ -18,131 +18,13 @@ end
 
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
--- ══════════════════════════════════════════════════════════
--- REPUBLIC v1.0.02 | KEY SYSTEM
--- ══════════════════════════════════════════════════════════
-
-local API_KEY  = "0b256b94-7de8-41aa-a2b4-7b22e0a54962"
-local APP_ID   = "1059380"
-local FLOW_URL = "https://jnkie.com/flow/4d25ac20-f13b-4255-a0d3-18bc6a88f6c7"
-
-local function CheckKey(key)
-    local url = "https://api.junkie.lol/verify?app=" .. APP_ID .. "&key=" .. key
-    local success, response = pcall(function()
-        return HttpService:GetAsync(url, true, {["x-api-key"] = API_KEY})
-    end)
-    if not success then return false end
-    local ok, data = pcall(HttpService.JSONDecode, HttpService, response)
-    return ok and data and data.valid == true
-end
-
-local KeyGui = Instance.new("ScreenGui", PlayerGui)
-KeyGui.Name = "RepublicKeySystem"
-KeyGui.ResetOnSpawn = false
-KeyGui.DisplayOrder = 999
-
-local BG = Instance.new("Frame", KeyGui)
-BG.Size = UDim2.new(0, 360, 0, 220)
-BG.Position = UDim2.new(0.5, -180, 0.5, -110)
-BG.BackgroundColor3 = Color3.new(0, 0, 0)
-BG.BorderSizePixel = 0
-local c = Instance.new("UICorner", BG); c.CornerRadius = UDim.new(0, 14)
-local s = Instance.new("UIStroke", BG); s.Color = Color3.new(1,1,1); s.Thickness = 2
-
-local Title = Instance.new("TextLabel", BG)
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.Position = UDim2.new(0, 0, 0, 10)
-Title.BackgroundTransparency = 1
-Title.Text = "REPUBLIC v1.0.02 | KEY SYSTEM"
-Title.TextColor3 = Color3.new(1, 1, 1)
-Title.Font = Enum.Font.GothamBlack
-Title.TextSize = 15
-
-local Box = Instance.new("TextBox", BG)
-Box.Size = UDim2.new(0, 300, 0, 36)
-Box.Position = UDim2.new(0.5, -150, 0, 60)
-Box.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-Box.BorderSizePixel = 0
-Box.PlaceholderText = "Enter your key..."
-Box.Text = ""
-Box.TextColor3 = Color3.new(1, 1, 1)
-Box.PlaceholderColor3 = Color3.new(0.5, 0.5, 0.5)
-Box.Font = Enum.Font.GothamBold
-Box.TextSize = 13
-local bc = Instance.new("UICorner", Box); bc.CornerRadius = UDim.new(0, 8)
-
-local Status = Instance.new("TextLabel", BG)
-Status.Size = UDim2.new(1, 0, 0, 20)
-Status.Position = UDim2.new(0, 0, 0, 105)
-Status.BackgroundTransparency = 1
-Status.Text = "Required: Complete the flow for access"
-Status.TextColor3 = Color3.new(0.6, 0.6, 0.6)
-Status.Font = Enum.Font.GothamBold
-Status.TextSize = 12
-
-local Submit = Instance.new("TextButton", BG)
-Submit.Size = UDim2.new(0, 300, 0, 34)
-Submit.Position = UDim2.new(0.5, -150, 0, 135)
-Submit.BackgroundColor3 = Color3.new(1, 1, 1)
-Submit.BorderSizePixel = 0
-Submit.Text = "SUBMIT KEY"
-Submit.TextColor3 = Color3.new(0, 0, 0)
-Submit.Font = Enum.Font.GothamBlack
-Submit.TextSize = 14
-local sc = Instance.new("UICorner", Submit); sc.CornerRadius = UDim.new(0, 8)
-
-local GetKeyBtn = Instance.new("TextButton", BG)
-GetKeyBtn.Size = UDim2.new(0, 300, 0, 30)
-GetKeyBtn.Position = UDim2.new(0.5, -150, 0, 175)
-GetKeyBtn.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
-GetKeyBtn.BorderSizePixel = 0
-GetKeyBtn.Text = "GET KEY (COPY LINK)"
-GetKeyBtn.TextColor3 = Color3.new(1, 1, 1)
-GetKeyBtn.Font = Enum.Font.GothamBold
-GetKeyBtn.TextSize = 13
-local gc = Instance.new("UICorner", GetKeyBtn); gc.CornerRadius = UDim.new(0, 8)
-
-local Verified = false
-
-GetKeyBtn.MouseButton1Click:Connect(function()
-    if setclipboard then
-        setclipboard(FLOW_URL)
-        Status.Text = "Link copied to clipboard!"
-        Status.TextColor3 = Color3.new(0.4, 1, 0.4)
-    else
-        Status.Text = FLOW_URL
-        Status.TextColor3 = Color3.new(1, 1, 1)
-    end
-end)
-
-Submit.MouseButton1Click:Connect(function()
-    local key = Box.Text
-    if key == "" then return end
-    Status.Text = "Verifying with Junkie.lol..."
-    Status.TextColor3 = Color3.new(1, 1, 1)
-    if CheckKey(key) then
-        Verified = true
-        Status.Text = "✓ Key valid! Loading Republic..."
-        Status.TextColor3 = Color3.new(0.4, 1, 0.4)
-        task.wait(1.2)
-        KeyGui:Destroy()
-    else
-        Status.Text = "✗ Invalid key. Try again."
-        Status.TextColor3 = Color3.new(1, 0.3, 0.3)
-    end
-end)
-
-repeat task.wait() until Verified
-
--- ══════════════════════════════════════════════════════════
--- REPUBLIC v1.0.02 | MAIN SCRIPT
--- ══════════════════════════════════════════════════════════
-
-for _, name in ipairs({"RepublicGUI","RepublicMobileButtons","RepublicOpenClose","AutoStartMenu"}) do
+-- Clean previous instances
+for _, name in ipairs({"PlasmaDuelsGUI","PlasmaMobileButtons","PlasmaOpenClose","AutoStartMenu"}) do
 local old = PlayerGui:FindFirstChild(name)
 if old then old:Destroy() end
 end
 
+--[ Colors: BLACK & WHITE ]--
 local C_BG = Color3.new(0, 0, 0)
 local C_BG2 = Color3.new(0.05, 0.05, 0.05)
 local C_BG3 = Color3.new(0.1, 0.1, 0.1)
@@ -154,6 +36,7 @@ local C_DARK = Color3.new(0.05, 0.05, 0.05)
 local C_TEXTDIM = Color3.new(0.7, 0.7, 0.7)
 local C_TOFF = Color3.new(0.1, 0.1, 0.1)
 
+--[ Settings ]--
 local S = {
 ReturnSpeed=29, GotoSpeed=58.5, SimpleAutoSpeed=60,
 RunSpeedBoost=50, SpeedWhileSteal=30, GalaxyGravity=70,
@@ -162,6 +45,7 @@ MedusaRadius=10, SpinSpeed=15, FloatSpamCPS=6.9,
 FloatHeight=0, GUIScale=100, StealRadius=7.7,
 }
 
+--[ Keybinds ]--
 local KB = {
 AutoLeft=Enum.KeyCode.Q, AutoRight=Enum.KeyCode.E,
 SpeedSteal=Enum.KeyCode.R, AutoSteal=Enum.KeyCode.V,
@@ -172,6 +56,7 @@ FloatSpam=Enum.KeyCode.G, Ungrab=Enum.KeyCode.C,
 Taunt=nil, ToggleUI=Enum.KeyCode.U,
 }
 
+--[ Feature States ]--
 local EN = {
 AutoPlay=false, AutoStart=false, AutoLeft=false, AutoRight=false,
 TPBrainrot=false, Float=false, Ungrab=false, AntiCollision=false,
@@ -181,39 +66,67 @@ AntiRagdoll=false, NoAnimations=false, Spinbot=false, FloatSpammer=false,
 MobileSupport=false, LockMobile=false,
 }
 
-local FileName = "Republic_Config.json"
+-- ══════════════════════════════════════════════════════════
+-- CONFIG SYSTEM
+-- ══════════════════════════════════════════════════════════
+local FileName = "JR_Hub_Config.json"
 
 local function SaveConfig()
 local data = {Settings = S, Keybinds = {}, Features = {}}
-for k, v in pairs(KB) do data.Keybinds[k] = v and v.Name or nil end
-for k, v in pairs(EN) do data.Features[k] = v end
+for k, v in pairs(KB) do
+data.Keybinds[k] = v and v.Name or nil
+end
+for k, v in pairs(EN) do
+data.Features[k] = v
+end
 local success, encoded = pcall(function() return HttpService:JSONEncode(data) end)
-if success then if writefile then writefile(FileName, encoded) end end
+if success then
+if writefile then
+writefile(FileName, encoded)
+end
+end
 end
 
 local function LoadConfig()
 if isfile and isfile(FileName) then
 local success, decoded = pcall(function() return HttpService:JSONDecode(readfile(FileName)) end)
 if success then
-if decoded.Settings then for k, v in pairs(decoded.Settings) do S[k] = v end end
-if decoded.Keybinds then for k, v in pairs(decoded.Keybinds) do if v then KB[k] = Enum.KeyCode[v] end end end
-if decoded.Features then for k, v in pairs(decoded.Features) do EN[k] = v end end
+if decoded.Settings then
+for k, v in pairs(decoded.Settings) do S[k] = v end
+end
+if decoded.Keybinds then
+for k, v in pairs(decoded.Keybinds) do
+if v then KB[k] = Enum.KeyCode[v] end
+end
+end
+if decoded.Features then
+for k, v in pairs(decoded.Features) do
+EN[k] = v
+end
+end
 end
 end
 end
 LoadConfig()
 
+--[ Waypoints ]--
 local PL1=Vector3.new(-476.48,-6.28,92.73); local PLEND=Vector3.new(-483.12,-4.95,94.80)
 local PLFINAL=Vector3.new(-473.38,-8.40,22.34); local PR1=Vector3.new(-476.16,-6.52,25.62)
 local PREND=Vector3.new(-483.04,-5.09,23.14); local PRFINAL=Vector3.new(-476.17,-7.91,97.91)
+
 local TP_MID=Vector3.new(-472.60,-7.00,57.52); local TP_L1=Vector3.new(-483.59,-5.04,104.24)
 local TP_R1=Vector3.new(-483.51,-5.10,18.89); local TP_LB=Vector3.new(-472.65,-7.00,95.69)
 local TP_RB=Vector3.new(-471.76,-7.00,26.22)
 
 local VisualSetters={};local KeyLabelRefs={};local waitingForKey=nil;local guiVisible=true
 
+--[ Character Helpers ]--
 local function getHRP() local c=LocalPlayer.Character;return c and c:FindFirstChild("HumanoidRootPart") end
 local function getHum() local c=LocalPlayer.Character;return c and c:FindFirstChildOfClass("Humanoid") end
+
+-- ══════════════════════════════════════════════════════════
+-- FEATURE LOGIC
+-- ══════════════════════════════════════════════════════════
 
 local function tpStep(pos) local h=getHRP();if not h then return end;h.CFrame=CFrame.new(pos);h.AssemblyLinearVelocity=Vector3.zero end
 local function doTPLeft() task.spawn(function() tpStep(TP_MID);task.wait(0.08);tpStep(TP_LB);task.wait(0.08);tpStep(TP_L1) end) end
@@ -269,9 +182,11 @@ local function startAutoWalk()
 stopAutoRight();if autoWalkConn then autoWalkConn:Disconnect() end
 aplPhase=1
 local LT={PL1,PLEND,PL1,PLFINAL}
+
 autoWalkConn=RunService.Heartbeat:Connect(function()
 if not EN.AutoLeft then stopAutoWalk();return end
 local h,hum=getHRP(),getHum();if not h or not hum then return end
+
 local md=hum.MoveDirection
 if md.Magnitude>0.1 then
 local spd=getAutoPhaseSpeed(math.clamp(aplPhase,1,4))
@@ -293,9 +208,11 @@ local function startAutoRight()
 stopAutoWalk();if autoRightConn then autoRightConn:Disconnect() end
 aprPhase=1
 local RT={PR1,PREND,PR1,PRFINAL}
+
 autoRightConn=RunService.Heartbeat:Connect(function()
 if not EN.AutoRight then stopAutoRight();return end
 local h,hum=getHRP(),getHum();if not h or not hum then return end
+
 local md=hum.MoveDirection
 if md.Magnitude>0.1 then
 local spd=getAutoPhaseSpeed(math.clamp(aprPhase,1,4))
@@ -313,6 +230,7 @@ hum:Move(m,false);h.AssemblyLinearVelocity=Vector3.new(m.X*spd,h.AssemblyLinearV
 end)
 end
 
+-- FIXED: Uses Stepped (runs before physics) to combat carry weight/restrictions
 local speedConn
 local function startSpeedBoost()
 if speedConn then return end
@@ -352,13 +270,13 @@ local spinBAV
 local function startSpinbot()
 local hrp=getHRP();if not hrp then return end
 if spinBAV then spinBAV:Destroy() end
-spinBAV=Instance.new("BodyAngularVelocity");spinBAV.Name="RepublicSpinBAV"
+spinBAV=Instance.new("BodyAngularVelocity");spinBAV.Name="PlasmaSpinBAV"
 spinBAV.MaxTorque=Vector3.new(0,math.huge,0);spinBAV.AngularVelocity=Vector3.new(0,S.SpinSpeed,0)
 spinBAV.Parent=hrp
 end
 local function stopSpinbot()
 if spinBAV then spinBAV:Destroy();spinBAV=nil end
-local hrp=getHRP();if hrp then for _,v in ipairs(hrp:GetChildren()) do if v.Name=="RepublicSpinBAV" then v:Destroy() end end end
+local hrp=getHRP();if hrp then for _,v in ipairs(hrp:GetChildren()) do if v.Name=="PlasmaSpinBAV" then v:Destroy() end end end
 end
 RunService.Heartbeat:Connect(function() if EN.Spinbot and spinBAV and spinBAV.Parent then spinBAV.AngularVelocity=Vector3.new(0,S.SpinSpeed,0) end end)
 
@@ -481,7 +399,7 @@ if mp:IsA("BasePart") then
 for _,tp in ipairs(p.Character:GetDescendants()) do
 if tp:IsA("BasePart") then
 pcall(function()
-local nm="RepNC_"..mp.Name.."_"..tp.Name
+local nm="PlasNC_"..mp.Name.."_"..tp.Name
 if not workspace:FindFirstChild(nm) then
 local nc=Instance.new("NoCollisionConstraint")
 nc.Name=nm;nc.Part0=mp;nc.Part1=tp;nc.Parent=workspace
@@ -492,12 +410,13 @@ end
 end
 end
 end
+end
 end)
 end
 local function stopAntiCollision()
 if ncConn then ncConn:Disconnect();ncConn=nil end
 for _,v in ipairs(workspace:GetChildren()) do
-if v:IsA("NoCollisionConstraint") and v.Name:sub(1,6)=="RepNC_" then v:Destroy() end
+if v:IsA("NoCollisionConstraint") and v.Name:sub(1,7)=="PlasNC_" then v:Destroy() end
 end
 end
 
@@ -589,10 +508,16 @@ end
 end
 return best,bestD
 end
+
 local function startBatAimbot()
+-- Prevent overlapping: Turn off auto-play states if they are running
 if EN.AutoLeft then stopAutoWalk() end
 if EN.AutoRight then stopAutoRight() end
-if EN.AutoPlay then EN.AutoPlay=false;if VisualSetters.AutoPlay then VisualSetters.AutoPlay(false) end end
+if EN.AutoPlay then
+EN.AutoPlay = false
+if VisualSetters.AutoPlay then VisualSetters.AutoPlay(false) end
+end
+
 if batAimbotConn then return end
 batAimbotConn=RunService.Heartbeat:Connect(function()
 if not EN.BatAimbot then return end
@@ -601,17 +526,23 @@ local bat=findBat()
 if bat and bat.Parent~=LocalPlayer.Character then local hum=getHum();if hum then pcall(function() hum:EquipTool(bat) end) end end
 local target,dist=findNearestEnemy();if not target or not target.Character then return end
 local tHRP=target.Character:FindFirstChild("HumanoidRootPart");if not tHRP then return end
-local dir=tHRP.Position-h.Position
-local totalDist=dir.Magnitude
-if totalDist>BAT_DIST then
-local md=dir.Unit
-h.AssemblyLinearVelocity=md*S.BatAimbotSpeed
+
+local dir = tHRP.Position - h.Position
+local totalDist = dir.Magnitude
+
+if totalDist > BAT_DIST then
+local md = dir.Unit
+h.AssemblyLinearVelocity = md * S.BatAimbotSpeed
 else
-local tv=tHRP.AssemblyLinearVelocity
-local pull=totalDist>0.1 and (dir.Unit*(totalDist/BAT_DIST)*18) or Vector3.zero
-h.AssemblyLinearVelocity=tv+pull
-local now=tick()
-if bat and now-lastBatSwing>=BAT_CD then lastBatSwing=now;pcall(function() bat:Activate() end) end
+local tv = tHRP.AssemblyLinearVelocity
+local pull = totalDist > 0.1 and (dir.Unit * (totalDist / BAT_DIST) * 18) or Vector3.zero
+h.AssemblyLinearVelocity = tv + pull
+
+local now = tick()
+if bat and now - lastBatSwing >= BAT_CD then
+lastBatSwing = now
+pcall(function() bat:Activate() end)
+end
 end
 end)
 end
@@ -645,8 +576,8 @@ if p==LocalPlayer then return end
 task.spawn(function()
 local char=p.Character or p.CharacterAdded:Wait()
 local hrp=char:WaitForChild("HumanoidRootPart",5);if not hrp then return end
-if hrp:FindFirstChild("RepublicESP") then return end
-local bb=Instance.new("BillboardGui",hrp);bb.Name="RepublicESP"
+if hrp:FindFirstChild("PlasmaESP") then return end
+local bb=Instance.new("BillboardGui",hrp);bb.Name="PlasmaESP"
 bb.Size=UDim2.new(0,100,0,28);bb.StudsOffset=Vector3.new(0,3.5,0);bb.AlwaysOnTop=true
 local lbl=Instance.new("TextLabel",bb);lbl.Size=UDim2.new(1,0,1,0)
 lbl.BackgroundTransparency=1;lbl.TextColor3=C_ACCENT;lbl.TextStrokeTransparency=0
@@ -663,7 +594,7 @@ end
 local function stopSpeedESP()
 for _,c in ipairs(espConns) do pcall(function() c:Disconnect() end) end;espConns={}
 for _,p in ipairs(Players:GetPlayers()) do
-if p.Character then local hrp=p.Character:FindFirstChild("HumanoidRootPart");if hrp then local bb=hrp:FindFirstChild("RepublicESP");if bb then bb:Destroy() end end end
+if p.Character then local hrp=p.Character:FindFirstChild("HumanoidRootPart");if hrp then local bb=hrp:FindFirstChild("PlasmaESP");if bb then bb:Destroy() end end end
 end
 end
 
@@ -739,7 +670,7 @@ g.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),ColorS
 g.Rotation=45;g.Parent=p
 end
 
-local ScreenGui=Instance.new("ScreenGui",PlayerGui);ScreenGui.Name="RepublicGUI"
+local ScreenGui=Instance.new("ScreenGui",PlayerGui);ScreenGui.Name="PlasmaDuelsGUI"
 ScreenGui.ResetOnSpawn=false;ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 
 local MainFrame=Instance.new("Frame",ScreenGui);MainFrame.Name="MainFrame"
@@ -749,22 +680,25 @@ mkCorner(MainFrame,16);mkStroke(MainFrame,C_ACCENT,2.5,0)
 
 local UIScale=Instance.new("UIScale",MainFrame);UIScale.Scale=S.GUIScale/100
 
-local GalaxyFrame=Instance.new("Frame",MainFrame)
-GalaxyFrame.Size=UDim2.new(1,0,1,0);GalaxyFrame.BackgroundTransparency=1;GalaxyFrame.ZIndex=0
+-- Galaxy Background Effect
+local GalaxyFrame = Instance.new("Frame", MainFrame)
+GalaxyFrame.Size = UDim2.new(1,0,1,0); GalaxyFrame.BackgroundTransparency = 1; GalaxyFrame.ZIndex = 0
 task.spawn(function()
-local stars={}
-for i=1,50 do
-local s=Instance.new("Frame",GalaxyFrame)
-s.Size=UDim2.new(0,math.random(1,2),0,math.random(1,2))
-s.Position=UDim2.new(math.random(),0,math.random(),0)
-s.BackgroundColor3=Color3.new(1,1,1);s.BorderSizePixel=0;mkCorner(s,10)
-stars[i]={obj=s,speed=math.random(10,50)/1000}
+local stars = {}
+for i=1, 50 do
+local s = Instance.new("Frame", GalaxyFrame)
+s.Size = UDim2.new(0, math.random(1,2), 0, math.random(1,2))
+s.Position = UDim2.new(math.random(), 0, math.random(), 0)
+s.BackgroundColor3 = Color3.new(1,1,1)
+s.BorderSizePixel = 0
+mkCorner(s, 10)
+stars[i] = {obj=s, speed=math.random(10,50)/1000}
 end
 RunService.RenderStepped:Connect(function()
-for _,star in ipairs(stars) do
-local newY=star.obj.Position.Y.Scale+star.speed
-if newY>1 then newY=-0.01 end
-star.obj.Position=UDim2.new(star.obj.Position.X.Scale,0,newY,0)
+for _, star in ipairs(stars) do
+local newY = star.obj.Position.Y.Scale + star.speed
+if newY > 1 then newY = -0.01 end
+star.obj.Position = UDim2.new(star.obj.Position.X.Scale, 0, newY, 0)
 end
 end)
 end)
@@ -774,14 +708,17 @@ TitleBar.Size=UDim2.new(1,0,0,50);TitleBar.BackgroundColor3=C_BG2;TitleBar.Borde
 local tbFix=Instance.new("Frame",TitleBar);tbFix.Size=UDim2.new(1,0,0.5,0);tbFix.Position=UDim2.new(0,0,0.5,0)
 tbFix.BackgroundColor3=C_BG2;tbFix.BorderSizePixel=0
 local TitleLbl=Instance.new("TextLabel",TitleBar);TitleLbl.Size=UDim2.new(1,0,1,0);TitleLbl.BackgroundTransparency=1
-TitleLbl.Text="REPUBLIC v1.0.02";TitleLbl.Font=Enum.Font.GothamBlack;TitleLbl.TextSize=20;TitleLbl.TextColor3=C_ACCENT
+TitleLbl.Text="JR'S HUB (PREMIUM)";TitleLbl.Font=Enum.Font.GothamBlack;TitleLbl.TextSize=20;TitleLbl.TextColor3=C_ACCENT
 
+-- Draggable MainFrame
 do
 local _drag,_dragStart,_startPos=false,nil,nil
 TitleBar.InputBegan:Connect(function(i)
 if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
 _drag=true;_dragStart=i.Position;_startPos=MainFrame.Position
-i.Changed:Connect(function() if i.UserInputState==Enum.UserInputState.End then _drag=false end end)
+i.Changed:Connect(function()
+if i.UserInputState==Enum.UserInputState.End then _drag=false end
+end)
 end
 end)
 UserInputService.InputChanged:Connect(function(i)
@@ -798,7 +735,7 @@ end
 
 local DiscLbl=Instance.new("TextLabel",MainFrame);DiscLbl.Name="Discord"
 DiscLbl.Size=UDim2.new(1,0,0,20);DiscLbl.Position=UDim2.new(0,0,1,-25)
-DiscLbl.BackgroundTransparency=1;DiscLbl.Text="Republic Version 1.0.02"
+DiscLbl.BackgroundTransparency=1;DiscLbl.Text="discord.gg/JRSHUB"
 DiscLbl.Font=Enum.Font.GothamBold;DiscLbl.TextSize=12;DiscLbl.TextColor3=C_ACCENT
 
 local TabContainer=Instance.new("Frame",MainFrame);TabContainer.Name="TabContainer"
@@ -857,6 +794,7 @@ btn.MouseButton1Click:Connect(function() on=not on;EN[eKey]=on;refresh();if cb t
 return frame
 end
 
+-- ── Features Tab ────────────────────────────────────────────
 makeToggleRow(FeaturesFrame,"Auto Play","AutoPlay",function(v)
 EN.AutoLeft=v;if v then startAutoWalk() else stopAutoWalk() end
 if VisualSetters.AutoLeft then VisualSetters.AutoLeft(v) end
@@ -909,6 +847,7 @@ makeToggleRow(FeaturesFrame,"Float Spammer","FloatSpammer",function(v)
 if v then startFloatSpammer() end
 end)
 
+-- ── Keybinds Tab ─────────────────────────────────────────
 local function makeKeybindRow(parent,label,kKey)
 rowOrder=rowOrder+1
 local frame=Instance.new("Frame",parent);frame.Name=label.."Container"
@@ -930,6 +869,7 @@ makeKeybindRow(KeybindsFrame,"No Anim","NoAnim");makeKeybindRow(KeybindsFrame,"S
 makeKeybindRow(KeybindsFrame,"Float Spam","FloatSpam");makeKeybindRow(KeybindsFrame,"Ungrab","Ungrab")
 makeKeybindRow(KeybindsFrame,"Taunt","Taunt");makeKeybindRow(KeybindsFrame,"Toggle UI","ToggleUI")
 
+-- ── Settings Tab ─────────────────────────────────────────
 local function makeSettingRow(parent,label,sKey,default)
 rowOrder=rowOrder+1
 local frame=Instance.new("Frame",parent);frame.Size=UDim2.new(1,0,0,45)
@@ -969,14 +909,21 @@ makeSettingRow(SettingsFrame,"Spinbot Speed","SpinSpeed",15)
 makeSettingRow(SettingsFrame,"Float Spam CPS","FloatSpamCPS",6.9)
 makeSettingRow(SettingsFrame,"Steal Radius","StealRadius",7.7)
 
+-- Save Button Row
 do
 rowOrder=rowOrder+1
 local sb=Instance.new("TextButton",SettingsFrame);sb.Size=UDim2.new(1,0,0,38)
 sb.BackgroundColor3=C_BG4;sb.BorderSizePixel=0;sb.Text="SAVE CONFIGURATION"
 sb.Font=Enum.Font.GothamBlack;sb.TextSize=14;sb.TextColor3=C_ACCENT;sb.LayoutOrder=rowOrder;mkCorner(sb,10)
-sb.MouseButton1Click:Connect(function() SaveConfig();sb.Text="SAVED!";task.wait(1);sb.Text="SAVE CONFIGURATION" end)
+sb.MouseButton1Click:Connect(function()
+SaveConfig()
+sb.Text = "SAVED!"
+task.wait(1)
+sb.Text = "SAVE CONFIGURATION"
+end)
 end
 
+-- Reset Defaults
 do
 rowOrder=rowOrder+1
 local rb=Instance.new("TextButton",SettingsFrame);rb.Size=UDim2.new(1,0,0,38)
@@ -990,61 +937,93 @@ SaveConfig()
 end)
 end
 
+-- ── Mobile Tab ───────────────────────────────────────────
 do
 rowOrder=rowOrder+1
 local tl=Instance.new("TextLabel",MobileFrame);tl.Size=UDim2.new(1,-10,0,30)
 tl.BackgroundTransparency=1;tl.Text="MOBILE BUTTONS";tl.TextColor3=C_ACCENT
 tl.Font=Enum.Font.GothamBlack;tl.TextSize=14;tl.TextXAlignment=Enum.TextXAlignment.Left;tl.LayoutOrder=rowOrder
 makeToggleRow(MobileFrame,"Show Mobile Buttons","MobileSupport",function(v)
-local gui=PlayerGui:FindFirstChild("RepublicMobileButtons");if gui then gui.Enabled=v end
+local gui=PlayerGui:FindFirstChild("PlasmaMobileButtons");if gui then gui.Enabled=v end
 end)
 makeToggleRow(MobileFrame,"Lock Buttons","LockMobile")
 end
 
-local MobileGui=Instance.new("ScreenGui",PlayerGui);MobileGui.Name="RepublicMobileButtons";MobileGui.ResetOnSpawn=false;MobileGui.Enabled=false
+-- ══════════════════════════════════════════════════════════
+-- MOBILE BUTTONS GUI
+-- ══════════════════════════════════════════════════════════
+local MobileGui=Instance.new("ScreenGui",PlayerGui);MobileGui.Name="PlasmaMobileButtons";MobileGui.ResetOnSpawn=false;MobileGui.Enabled=false
 local mobileData={
-{text="AUTO\nPLAY",key="AutoPlay",pos=UDim2.new(0,15,0.5,-110),cb=function() EN.AutoPlay=not EN.AutoPlay;if EN.AutoPlay then startAutoWalk() else stopAutoWalk() end;if VisualSetters.AutoPlay then VisualSetters.AutoPlay(EN.AutoPlay) end end},
-{text="AUTO\nLEFT",key="AutoLeft",pos=UDim2.new(0,15,0.5,-37),cb=function() EN.AutoLeft=not EN.AutoLeft;if EN.AutoLeft then startAutoWalk() else stopAutoWalk() end;if VisualSetters.AutoLeft then VisualSetters.AutoLeft(EN.AutoLeft) end end},
-{text="AUTO\nRIGHT",key="AutoRight",pos=UDim2.new(0,15,0.5,36),cb=function() EN.AutoRight=not EN.AutoRight;if EN.AutoRight then startAutoRight() else stopAutoRight() end;if VisualSetters.AutoRight then VisualSetters.AutoRight(EN.AutoRight) end end},
-{text="FLOAT",key="Float",pos=UDim2.new(1,-80,0.5,-110),cb=function() EN.Float=not EN.Float;if EN.Float then startFloat() else stopFloat() end;if VisualSetters.Float then VisualSetters.Float(EN.Float) end end},
-{text="BAT\nAIMBOT",key="BatAimbot",pos=UDim2.new(1,-80,0.5,-37),cb=function() EN.BatAimbot=not EN.BatAimbot;if EN.BatAimbot then startBatAimbot() else stopBatAimbot() end;if VisualSetters.BatAimbot then VisualSetters.BatAimbot(EN.BatAimbot) end end},
-{text="SPIN\nBOT",key="Spinbot",pos=UDim2.new(1,-80,0.5,36),cb=function() EN.Spinbot=not EN.Spinbot;if EN.Spinbot then startSpinbot() else stopSpinbot() end;if VisualSetters.Spinbot then VisualSetters.Spinbot(EN.Spinbot) end end},
+{text="AUTO\nPLAY", key="AutoPlay", pos=UDim2.new(0,15,0.5,-110),cb=function() EN.AutoPlay=not EN.AutoPlay;if EN.AutoPlay then startAutoWalk() else stopAutoWalk() end;if VisualSetters.AutoPlay then VisualSetters.AutoPlay(EN.AutoPlay) end end},
+{text="AUTO\nLEFT", key="AutoLeft", pos=UDim2.new(0,15,0.5,-37),cb=function() EN.AutoLeft=not EN.AutoLeft;if EN.AutoLeft then startAutoWalk() else stopAutoWalk() end;if VisualSetters.AutoLeft then VisualSetters.AutoLeft(EN.AutoLeft) end end},
+{text="AUTO\nRIGHT", key="AutoRight", pos=UDim2.new(0,15,0.5,36),cb=function() EN.AutoRight=not EN.AutoRight;if EN.AutoRight then startAutoRight() else stopAutoRight() end;if VisualSetters.AutoRight then VisualSetters.AutoRight(EN.AutoRight) end end},
+{text="FLOAT", key="Float", pos=UDim2.new(1,-80,0.5,-110),cb=function() EN.Float=not EN.Float;if EN.Float then startFloat() else stopFloat() end;if VisualSetters.Float then VisualSetters.Float(EN.Float) end end},
+{text="BAT\nAIMBOT", key="BatAimbot", pos=UDim2.new(1,-80,0.5,-37),cb=function() EN.BatAimbot=not EN.BatAimbot;if EN.BatAimbot then startBatAimbot() else stopBatAimbot() end;if VisualSetters.BatAimbot then VisualSetters.BatAimbot(EN.BatAimbot) end end},
+{text="SPIN\nBOT", key="Spinbot", pos=UDim2.new(1,-80,0.5,36),cb=function() EN.Spinbot=not EN.Spinbot;if EN.Spinbot then startSpinbot() else stopSpinbot() end;if VisualSetters.Spinbot then VisualSetters.Spinbot(EN.Spinbot) end end},
 }
 
 for _,mb in ipairs(mobileData) do
 local btn=Instance.new("TextButton",MobileGui);btn.Size=UDim2.new(0,65,0,65);btn.Position=mb.pos
 btn.BackgroundColor3=C_BG;btn.BorderSizePixel=0;btn.Text=mb.text;btn.TextSize=9;btn.TextWrapped=true
 btn.TextColor3=C_WHITE;btn.Font=Enum.Font.GothamBlack;btn.Active=true;mkCorner(btn,12);mkStroke(btn,C_ACCENT,2,0.3)
-local dragging,dragStart,startPos=false,nil,nil
-local activeColor=C_GREY;local inactiveColor=C_BG
-local function updateColor() btn.BackgroundColor3=EN[mb.key] and activeColor or inactiveColor end
-local oldSetter=VisualSetters[mb.key]
-VisualSetters[mb.key]=function(state) if oldSetter then oldSetter(state) end;updateColor() end
-updateColor()
-btn.InputBegan:Connect(function(input)
-if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-btn.BackgroundColor3=Color3.new(0.8,0.8,0.8)
-if not EN.LockMobile then dragging=true;dragStart=input.Position;startPos=btn.Position end
-end
-end)
-btn.InputEnded:Connect(function(input)
-if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-updateColor();dragging=false
-end
-end)
-UserInputService.InputChanged:Connect(function(input)
-if dragging and (input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch) then
-local delta=input.Position-dragStart
-btn.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
-end
-end)
-btn.MouseButton1Click:Connect(function() mb.cb();updateColor() end)
+
+local dragging, dragStart, startPos = false, nil, nil
+local activeColor = C_GREY
+local inactiveColor = C_BG
+
+-- Updates the color based on the current feature state
+local function updateColor()
+btn.BackgroundColor3 = EN[mb.key] and activeColor or inactiveColor
 end
 
-local OpenCloseGui=Instance.new("ScreenGui",PlayerGui);OpenCloseGui.Name="RepublicOpenClose";OpenCloseGui.ResetOnSpawn=false
+-- Hook into VisualSetters so the mobile button syncs if toggled via Main UI / Keybind
+local oldSetter = VisualSetters[mb.key]
+VisualSetters[mb.key] = function(state)
+if oldSetter then oldSetter(state) end
+updateColor()
+end
+
+-- Run once immediately to set the default state color
+updateColor()
+
+btn.InputBegan:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+btn.BackgroundColor3 = Color3.new(0.8, 0.8, 0.8) -- Briefly flash lighter when tapped for feedback
+if not EN.LockMobile then
+dragging = true
+dragStart = input.Position
+startPos = btn.Position
+end
+end
+end)
+
+btn.InputEnded:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+updateColor() -- Snap back to grey (active) or black (inactive)
+dragging = false
+end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+local delta = input.Position - dragStart
+btn.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+end)
+
+btn.MouseButton1Click:Connect(function()
+mb.cb()
+updateColor()
+end)
+end
+
+-- ══════════════════════════════════════════════════════════
+-- OPEN/CLOSE BUTTON
+-- ══════════════════════════════════════════════════════════
+local OpenCloseGui=Instance.new("ScreenGui",PlayerGui);OpenCloseGui.Name="PlasmaOpenClose";OpenCloseGui.ResetOnSpawn=false
 local ocBtn=Instance.new("TextButton",OpenCloseGui);ocBtn.Size=UDim2.new(0,52,0,52)
 ocBtn.Position=UDim2.new(0.5,-26,0,10)
-ocBtn.BackgroundColor3=C_BG;ocBtn.Text="REP";ocBtn.TextColor3=C_WHITE;ocBtn.TextSize=14;ocBtn.Font=Enum.Font.GothamBlack;ocBtn.Active=true;ocBtn.BorderSizePixel=0;mkCorner(ocBtn,14);mkStroke(ocBtn,C_ACCENT,2,0)
+ocBtn.BackgroundColor3=C_BG;ocBtn.Text="JR";ocBtn.TextColor3=C_WHITE;ocBtn.TextSize=20;ocBtn.Font=Enum.Font.GothamBlack;ocBtn.Active=true;ocBtn.BorderSizePixel=0;mkCorner(ocBtn,14);mkStroke(ocBtn,C_ACCENT,2,0)
 ocBtn.MouseButton1Click:Connect(function() guiVisible=not guiVisible;MainFrame.Visible=guiVisible end)
 local _dd,_dds,_ddp=false,nil,nil
 ocBtn.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then _dd=true;_dds=i.Position;_ddp=ocBtn.Position end end)
@@ -1055,12 +1034,15 @@ local d=i.Position-_dds;ocBtn.Position=UDim2.new(_ddp.X.Scale,_ddp.X.Offset+d.X,
 end
 end)
 
+-- ══════════════════════════════════════════════════════════
+-- AUTO START MENU
+-- ══════════════════════════════════════════════════════════
 local AutoStartGui=Instance.new("ScreenGui",PlayerGui);AutoStartGui.Name="AutoStartMenu";AutoStartGui.DisplayOrder=100;AutoStartGui.ResetOnSpawn=false
 local asFrame=Instance.new("Frame",AutoStartGui);asFrame.Name="AutoStartMenuFrame"
 asFrame.Size=UDim2.new(0,200,0,140);asFrame.Position=UDim2.new(0.5,-100,0.3,0)
 asFrame.BackgroundColor3=Color3.new(0,0,0);asFrame.Visible=false;mkCorner(asFrame,12);mkStroke(asFrame,C_ACCENT,2,0)
 local asTl=Instance.new("TextLabel",asFrame);asTl.Size=UDim2.new(1,0,0,24);asTl.Position=UDim2.new(0,0,0,8)
-asTl.BackgroundTransparency=1;asTl.Text="REPUBLIC v1.0.02";asTl.TextColor3=C_ACCENT;asTl.Font=Enum.Font.GothamBlack;asTl.TextSize=16
+asTl.BackgroundTransparency=1;asTl.Text="JR'S HUB";asTl.TextColor3=C_ACCENT;asTl.Font=Enum.Font.GothamBlack;asTl.TextSize=16
 local asSub=Instance.new("TextLabel",asFrame);asSub.Size=UDim2.new(1,0,0,20);asSub.Position=UDim2.new(0,0,0,32)
 asSub.BackgroundTransparency=1;asSub.Text="Auto Start";asSub.TextColor3=C_GREY;asSub.Font=Enum.Font.GothamBold;asSub.TextSize=12
 local function asSideBtn(text,y,action)
@@ -1071,7 +1053,10 @@ end
 asSideBtn("Left Side",60,function() EN.AutoLeft=true;startAutoWalk();if VisualSetters.AutoLeft then VisualSetters.AutoLeft(true) end end)
 asSideBtn("Right Side",96,function() EN.AutoRight=true;startAutoRight();if VisualSetters.AutoRight then VisualSetters.AutoRight(true) end end)
 
-UserInputService.InputBegan:Connect(function(input,gpe)
+-- ══════════════════════════════════════════════════════════
+-- GLOBAL INPUT HANDLER
+-- ══════════════════════════════════════════════════════════
+UserInputService.InputBegan:Connect(function(input, gpe)
 if waitingForKey then
 if input.KeyCode~=Enum.KeyCode.Unknown then
 local k=input.KeyCode
@@ -1093,14 +1078,14 @@ if EN[enKey] then if startFn then startFn() end else if stopFn then stopFn() end
 end
 
 if input.KeyCode==KB.ToggleUI then guiVisible=not guiVisible;MainFrame.Visible=guiVisible end
-if input.KeyCode==KB.AutoLeft then tog("AutoLeft",startAutoWalk,stopAutoWalk) end
+if input.KeyCode==KB.AutoLeft then tog("AutoLeft", startAutoWalk, stopAutoWalk) end
 if input.KeyCode==KB.AutoRight then tog("AutoRight",startAutoRight,stopAutoRight) end
-if input.KeyCode==KB.Float then tog("Float",startFloat,stopFloat) end
-if input.KeyCode==KB.Spinbot then tog("Spinbot",startSpinbot,stopSpinbot) end
+if input.KeyCode==KB.Float then tog("Float", startFloat, stopFloat) end
+if input.KeyCode==KB.Spinbot then tog("Spinbot", startSpinbot, stopSpinbot) end
 if input.KeyCode==KB.BatAimbot then tog("BatAimbot",startBatAimbot,stopBatAimbot) end
 if input.KeyCode==KB.AntiRagdoll then tog("AntiRagdoll",startAntiRagdoll,stopAntiRagdoll) end
 if input.KeyCode==KB.NoAnim then tog("NoAnimations",startNoAnimations,stopNoAnimations) end
-if input.KeyCode==KB.Ungrab then tog("Ungrab",startUngrab,stopUngrab) end
+if input.KeyCode==KB.Ungrab then tog("Ungrab", startUngrab, stopUngrab) end
 if input.KeyCode==KB.AutoSteal then tog("AutoSteal",startAutoSteal,stopAutoSteal) end
 if input.KeyCode==KB.FloatSpam then tog("FloatSpammer",startFloatSpammer,nil) end
 if input.KeyCode==KB.RunSpeed then
@@ -1111,6 +1096,7 @@ tog("SpeedSteal",startSpeedBoost,function() if not EN.RunSpeed then stopSpeedBoo
 end
 end)
 
+-- Boot loaded states directly
 local function InitializeSavedFeatures()
 if EN.AutoLeft then startAutoWalk() end
 if EN.AutoRight then startAutoRight() end
@@ -1130,4 +1116,7 @@ if EN.FloatSpammer then startFloatSpammer() end
 if EN.RunSpeed or EN.SpeedSteal then startSpeedBoost() end
 end
 
+-- Fire it up!
 InitializeSavedFeatures()
+
+
