@@ -69,7 +69,7 @@ MobileSupport=false, LockMobile=false,
 -- ══════════════════════════════════════════════════════════
 -- CONFIG SYSTEM
 -- ══════════════════════════════════════════════════════════
-local FileName = "TOX_Hub_Config.json"
+local FileName = "JR_Hub_Config.json"
 
 local function SaveConfig()
 local data = {Settings = S, Keybinds = {}, Features = {}}
@@ -187,11 +187,6 @@ autoWalkConn=RunService.Heartbeat:Connect(function()
 if not EN.AutoLeft then stopAutoWalk();return end
 local h,hum=getHRP(),getHum();if not h or not hum then return end
 
-local md=hum.MoveDirection
-if md.Magnitude>0.1 then
-local spd=getAutoPhaseSpeed(math.clamp(aplPhase,1,4))
-h.AssemblyLinearVelocity=Vector3.new(md.X*spd,h.AssemblyLinearVelocity.Y,md.Z*spd);return
-end
 if aplPhase>4 then stopAutoWalk();return end
 local t=LT[aplPhase];local d=Vector3.new(t.X-h.Position.X,0,t.Z-h.Position.Z)
 if d.Magnitude<1 then
@@ -213,11 +208,6 @@ autoRightConn=RunService.Heartbeat:Connect(function()
 if not EN.AutoRight then stopAutoRight();return end
 local h,hum=getHRP(),getHum();if not h or not hum then return end
 
-local md=hum.MoveDirection
-if md.Magnitude>0.1 then
-local spd=getAutoPhaseSpeed(math.clamp(aprPhase,1,4))
-h.AssemblyLinearVelocity=Vector3.new(md.X*spd,h.AssemblyLinearVelocity.Y,md.Z*spd);return
-end
 if aprPhase>4 then stopAutoRight();return end
 local t=RT[aprPhase];local d=Vector3.new(t.X-h.Position.X,0,t.Z-h.Position.Z)
 if d.Magnitude<1 then
@@ -708,7 +698,7 @@ TitleBar.Size=UDim2.new(1,0,0,50);TitleBar.BackgroundColor3=C_BG2;TitleBar.Borde
 local tbFix=Instance.new("Frame",TitleBar);tbFix.Size=UDim2.new(1,0,0.5,0);tbFix.Position=UDim2.new(0,0,0.5,0)
 tbFix.BackgroundColor3=C_BG2;tbFix.BorderSizePixel=0
 local TitleLbl=Instance.new("TextLabel",TitleBar);TitleLbl.Size=UDim2.new(1,0,1,0);TitleLbl.BackgroundTransparency=1
-TitleLbl.Text="TOX'S HUB (PREMIUM)";TitleLbl.Font=Enum.Font.GothamBlack;TitleLbl.TextSize=20;TitleLbl.TextColor3=C_ACCENT
+TitleLbl.Text="JR'S HUB (PREMIUM)";TitleLbl.Font=Enum.Font.GothamBlack;TitleLbl.TextSize=20;TitleLbl.TextColor3=C_ACCENT
 
 -- Draggable MainFrame
 do
@@ -735,7 +725,7 @@ end
 
 local DiscLbl=Instance.new("TextLabel",MainFrame);DiscLbl.Name="Discord"
 DiscLbl.Size=UDim2.new(1,0,0,20);DiscLbl.Position=UDim2.new(0,0,1,-25)
-DiscLbl.BackgroundTransparency=1;DiscLbl.Text="https://discord.gg/AG9bjcurht"
+DiscLbl.BackgroundTransparency=1;DiscLbl.Text="discord.gg/JRSHUB"
 DiscLbl.Font=Enum.Font.GothamBold;DiscLbl.TextSize=12;DiscLbl.TextColor3=C_ACCENT
 
 local TabContainer=Instance.new("Frame",MainFrame);TabContainer.Name="TabContainer"
@@ -1023,7 +1013,7 @@ end
 local OpenCloseGui=Instance.new("ScreenGui",PlayerGui);OpenCloseGui.Name="PlasmaOpenClose";OpenCloseGui.ResetOnSpawn=false
 local ocBtn=Instance.new("TextButton",OpenCloseGui);ocBtn.Size=UDim2.new(0,52,0,52)
 ocBtn.Position=UDim2.new(0.5,-26,0,10)
-ocBtn.BackgroundColor3=C_BG;ocBtn.Text="TOX";ocBtn.TextColor3=C_WHITE;ocBtn.TextSize=20;ocBtn.Font=Enum.Font.GothamBlack;ocBtn.Active=true;ocBtn.BorderSizePixel=0;mkCorner(ocBtn,14);mkStroke(ocBtn,C_ACCENT,2,0)
+ocBtn.BackgroundColor3=C_BG;ocBtn.Text="JR";ocBtn.TextColor3=C_WHITE;ocBtn.TextSize=20;ocBtn.Font=Enum.Font.GothamBlack;ocBtn.Active=true;ocBtn.BorderSizePixel=0;mkCorner(ocBtn,14);mkStroke(ocBtn,C_ACCENT,2,0)
 ocBtn.MouseButton1Click:Connect(function() guiVisible=not guiVisible;MainFrame.Visible=guiVisible end)
 local _dd,_dds,_ddp=false,nil,nil
 ocBtn.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 then _dd=true;_dds=i.Position;_ddp=ocBtn.Position end end)
@@ -1042,7 +1032,7 @@ local asFrame=Instance.new("Frame",AutoStartGui);asFrame.Name="AutoStartMenuFram
 asFrame.Size=UDim2.new(0,200,0,140);asFrame.Position=UDim2.new(0.5,-100,0.3,0)
 asFrame.BackgroundColor3=Color3.new(0,0,0);asFrame.Visible=false;mkCorner(asFrame,12);mkStroke(asFrame,C_ACCENT,2,0)
 local asTl=Instance.new("TextLabel",asFrame);asTl.Size=UDim2.new(1,0,0,24);asTl.Position=UDim2.new(0,0,0,8)
-asTl.BackgroundTransparency=1;asTl.Text="TOX'S HUB";asTl.TextColor3=C_ACCENT;asTl.Font=Enum.Font.GothamBlack;asTl.TextSize=16
+asTl.BackgroundTransparency=1;asTl.Text="JR'S HUB";asTl.TextColor3=C_ACCENT;asTl.Font=Enum.Font.GothamBlack;asTl.TextSize=16
 local asSub=Instance.new("TextLabel",asFrame);asSub.Size=UDim2.new(1,0,0,20);asSub.Position=UDim2.new(0,0,0,32)
 asSub.BackgroundTransparency=1;asSub.Text="Auto Start";asSub.TextColor3=C_GREY;asSub.Font=Enum.Font.GothamBold;asSub.TextSize=12
 local function asSideBtn(text,y,action)
@@ -1118,5 +1108,3 @@ end
 
 -- Fire it up!
 InitializeSavedFeatures()
-
-
