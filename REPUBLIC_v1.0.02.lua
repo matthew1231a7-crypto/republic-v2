@@ -69,7 +69,7 @@ MobileSupport=false, LockMobile=false,
 -- ══════════════════════════════════════════════════════════
 -- CONFIG SYSTEM
 -- ══════════════════════════════════════════════════════════
-local FileName = "JR_Hub_Config.json"
+local FileName = "TOX_Hub_Config.json"
 
 local function SaveConfig()
 local data = {Settings = S, Keybinds = {}, Features = {}}
